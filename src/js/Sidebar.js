@@ -33,10 +33,10 @@ export default Sidebar = () => {
         </div>
       </a>
       <ul className="nav-links">
-        <li className={location.pathname == "/" ? "active" : ""}>
+        <li className={location.pathname == "/admin/dashboard" ? "active" : ""}>
           <a
             onClick={() => {
-              navigate('/')
+              navigate('/admin/dashboard')
             }}
           >
             <i>
@@ -47,10 +47,10 @@ export default Sidebar = () => {
             </span>
           </a>
         </li>
-        <li className={location.pathname == "/settings" ? "active" : ""}>
+        <li className={location.pathname == "/admin/settings" ? "active" : ""}>
           <a
             onClick={() => {
-              navigate('/settings')
+              navigate('/admin/settings')
             }}
           >
             <i>

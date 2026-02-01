@@ -22,7 +22,7 @@ export default Login = () => {
         user: payload.data.user
       });
 
-      window.location.href = "/";
+      window.location.href = "/admin";
     }).catch((payload) => {
       console.log("Something went wrong");
       console.log(payload.response);

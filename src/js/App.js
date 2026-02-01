@@ -1,41 +1,65 @@
-import React, { useState } from "react";
-import Login from "./Login";
+import React from "react";
+import Home from "./Home";
 import { isLoggedIn } from "./services/AuthService";
-import Sidebar from "./Sidebar";
 import {
   Routes,
-  Route
+  Route,
+  Navigate
 } from "react-router-dom";
 
-import Dashboard from "./Dashboard";
+import Login from "./admin/Login";
+import AdminDashboard from "./admin/AdminDashboard";
+import AdminSettings from "./admin/AdminSettings";
 
 export default App = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const AdminIndexRedirect = () => {
+    return isLoggedIn()
+      ? <Navigate to="/admin/dashboard" replace/>
+      : <Navigate to="/admin/login" replace/>;
+  };
 
-  if (!isLoggedIn()) {
-    return (
-      <Login/>
-    );
-  }
+  const RequireAuth = ({ children }) => {
+    return isLoggedIn()
+      ? children
+      : <Navigate to="/admin/login" replace/>;
+  };
 
   return (
     <React.Fragment>
-      <div className="app-container">
-        <Sidebar
-          isOpen={isSidebarOpen}
-          setIsOpen={setIsSidebarOpen}
+      <Routes>
+        <Route
+          path="/"
+          element={<Home/>}
         />
-        <div className={`app-main-section ${isSidebarOpen ? 'open' : ''}`}>
-          <main className="container-fluid p-3">
-            <Routes>
-              <Route
-                path="/"
-                element={<Dashboard/>}
-              />
-            </Routes>
-          </main>
-        </div>
-      </div>
+        <Route
+          path="/admin"
+          element={<AdminIndexRedirect/>}
+        />
+        <Route
+          path="/admin/login"
+          element={<Login/>}
+        />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <RequireAuth>
+              <AdminDashboard/>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/admin/settings"
+          element={
+            <RequireAuth>
+              <AdminSettings/>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="*"
+          element={<Navigate to="/" replace/>}
+        />
+      </Routes>
     </React.Fragment>
   );
 }
